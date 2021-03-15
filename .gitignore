@@ -1,5 +1,6 @@
 # user defined
-output/
+output/*.npy
+output/*.jpg
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
