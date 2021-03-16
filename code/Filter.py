@@ -41,7 +41,8 @@ def zBand(pointcloud,z_range):
     return zband
 
 def interactiveZBand(viewer,vertices):
-    print("    Select points for model fitting with <Ctrl>+<LMB>\n    Cancel selection with <Ctrl>+<RMB>\n    Confirm selection with <Return>")
+    print("        !!INPUT NEEDED!!")
+    print("        Select Z-range for model fitting with <Ctrl>+<LMB>\n        Cancel selection with <Ctrl>+<RMB>\n        Confirm selection with <Return>")
     viewer.wait()
     sel = viewer.get('selected')
     return (min(vertices[2,sel]),max(vertices[2,sel]))

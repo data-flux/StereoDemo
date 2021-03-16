@@ -65,7 +65,7 @@ def plotPointCloud(vertices,color=None,lookat=[0.,0.,0.]):
     if color is not None:
         if type(color) is not tuple:
             color = (color,)
-        v.attributes(*color,[[1.0,1.0,1.0,0.05]])
+        v.attributes(*color)
     else:
         v.attributes([[1.0,1.0,1.0,0.05]])
     v.set(

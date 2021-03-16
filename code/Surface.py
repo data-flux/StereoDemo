@@ -59,7 +59,7 @@ def ransacSinoidFit(ccoord,minDataPoints=50,iterations=10,inlierThreshold=.005,m
         thiserr = np.inf
         if sum(alsoinliers) > N*minInlierFraction:
             if VERBOSE:
-                print(f"    ({iter+1:2d}/{iterations:2d}) First step inliers: {100*sum(alsoinliers)/N:.1f}%, ",end='',flush=True)
+                print(f"        ({iter+1:2d}/{iterations:2d}) First step inliers: {100*sum(alsoinliers)/N:.1f}%, ",end='',flush=True)
             bettermodel = fitModel(ccoord[:,alsoinliers])
             thiserr = np.mean(np.abs(applyModel(ccoord[:,alsoinliers], bettermodel)-ccoord[0,alsoinliers]))
             betterinliers = np.abs(applyModel(ccoord,bettermodel)-ccoord[0,:]) < inlierThreshold
@@ -75,7 +75,9 @@ def ransacSinoidFit(ccoord,minDataPoints=50,iterations=10,inlierThreshold=.005,m
                     print(f"Mean error: {thiserr:.2E}")
         else:
             if VERBOSE:
-                print(f"    ({iter+1:2d}/{iterations:2d}) First step inliers: {100*sum(alsoinliers)/N:.1f}%, not enough!")
+                print(f"        ({iter+1:2d}/{iterations:2d}) First step inliers: {100*sum(alsoinliers)/N:.1f}%, not enough!")
+    if bestfit is None:
+        raise Exception("RANSAC did not find an appropriate model!")
     inliers = np.zeros([N,],dtype=bool)
     inliers[bestinliers] = True
     return bestfit,inliers
@@ -87,3 +89,4 @@ def flattenSurface(ccoord,coeffs):
     flattened[2,:] *= -1
     flattened[1,:] *= np.nanmean(r)
     return flattened[[1,2,0],:]
+
