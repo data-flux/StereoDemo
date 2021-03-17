@@ -11,11 +11,11 @@ import math
 
 def stereoMatch(img):
     numDisparities= 220 # Maximum disparity we want to detect (closest point)
-    minDisparities= 40 # Minimum disparity we want to detect (furthest point)
+    minDisparities= 20 # Minimum disparity we want to detect (furthest point)
     blockSize = 7 # matching window size
     P1_constant = 100 # should be 0 because we are not looking at flat objects
-    P2_constant = 15_000 #non-zero for smoothing
-    uniquenessRatio = 30 #low = noisy, high = fewer matches
+    P2_constant = 10_000 #non-zero for smoothing
+    uniquenessRatio = 10 #low = noisy, high = fewer matches
 
     stereo = cv2.StereoSGBM_create(
         numDisparities=numDisparities, 

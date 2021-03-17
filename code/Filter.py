@@ -16,8 +16,8 @@ def removeBackground(img):
                 mask,                               # input mask, zeros
                 seed,                               # starting point
                 None,                               # fill value, not used
-                [25, 10, 50],                       # how much darker is allowed
-                [25, 80, 50],                       # how much lighter is allowed
+                [10, 10, 50],                       # how much darker is allowed
+                [10, 80, 50],                       # how much lighter is allowed
                 8|cv.FLOODFILL_MASK_ONLY|(255<<8)   # 8-connectivity, mask only, fill value 255
             )
         return mask
@@ -41,7 +41,6 @@ def zBand(pointcloud,z_range):
     return zband
 
 def interactiveZBand(viewer,vertices):
-    print("        !!INPUT NEEDED!!")
     print("        Select Z-range for model fitting with <Ctrl>+<LMB>\n        Cancel selection with <Ctrl>+<RMB>\n        Confirm selection with <Return>")
     viewer.wait()
     sel = viewer.get('selected')
@@ -50,7 +49,7 @@ def interactiveZBand(viewer,vertices):
 
 if __name__=="__main__":
     from Data import listImageSets, loadImageSet
-    img = loadImageSet(listImageSets()[26])[1]
+    img = loadImageSet(listImageSets()[34])[0]
     #img = cv.resize(img,(960,600))
     cv.imshow("orig",img)
     image = removeBackground(img)

@@ -6,7 +6,8 @@ The unchanged reference image.
 
 ## 01_highlighted.jpg
 
-The reference image with detected anomalies highlighted.
+The reference image with detected anomalies highlighted.  
+Red pixels indicate anomalies, blue pixels indicate a failed stereomatch for that pixel or a point outside the valid Z-range.
 
 ## 02_pointcloud.npy
 

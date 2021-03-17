@@ -12,11 +12,12 @@ from code.Anomaly import highlightAnomalies
 def demo(imset):
     print(f"[1/5] Image Acquisition")
     imageSet = loadImageSet(imset)
-    cv.imshow("Reference",imageSet[0])
-    cv.waitKey(1000)
+    #cv.imshow("Reference",imageSet[0])
+    #cv.waitKey(1000)
     cv.imwrite("output/00_reference.jpg",imageSet[0])
+    print(f"        Wrote reference image to output/00_reference.jpg")
     
-    print(f"[2/5] Semi Global Stereo Matching")
+    print(f"[2/5] Semi-Global Stereo Matching")
     disparity = stereoMatch(imageSet)
     print(f"[3/5] 3D Geometry Reconstruction")
     vertices,match = calculatePointCloud(disparity)
@@ -42,22 +43,24 @@ def demo(imset):
 
     print(f"[5/5] Anomaly Detection and Processing") 
     deviation = np.abs(flattened[2,mask].clip(-0.02,+0.02))
-    viewer = plotPointCloud(vertices[:,mask],(deviation,color),[0.,0.,-2.])
+    viewer1 = plotPointCloud(vertices[:,mask],(deviation,color),[0.,0.,-2.])
     pc = np.hstack([vertices[:,mask].T,flattened[[[2]],mask].T,color8b])
     np.save("output/02_pointcloud.npy",pc)
+    print(f"        Wrote pointcloud to output/02_pointcloud.npy")
     viewer2 = plotPointCloud(flattened[:,mask],(deviation,color),[0.,1.5,0.])
     pc2 = np.hstack([flattened[[[2]],mask].T,flattened[:2,mask].T,color8b])
     np.save("output/03_fit.npy",pc2)
+    print(f"        Wrote fit pointcloud to output/03_fit.npy")
 
 
     highlighted = highlightAnomalies(imageSet[0],flattened[2,:],mask)
 
-    cv.imshow("Highlighted",highlighted)
-    cv.waitKey(1000)
+    #cv.imshow("Highlighted",highlighted)
+    #cv.waitKey(1000)
     cv.imwrite("output/01_highlighted.jpg",highlighted)
+    print(f"        Wrote highlighted image to output/01_highlighted.jpg")
     
-    print(f"Done! Press RETURN to exit.")
-    input()
+    print(f"Done!")
 
 
 
