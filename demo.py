@@ -12,8 +12,6 @@ from code.Anomaly import highlightAnomalies
 def demo(imset):
     print(f"[1/5] Image Acquisition")
     imageSet = loadImageSet(imset)
-    #cv.imshow("Reference",imageSet[0])
-    #cv.waitKey(1000)
     cv.imwrite("output/00_reference.jpg",imageSet[0])
     print(f"        Wrote reference image to output/00_reference.jpg")
     
@@ -54,9 +52,6 @@ def demo(imset):
 
 
     highlighted = highlightAnomalies(imageSet[0],flattened[2,:],mask)
-
-    #cv.imshow("Highlighted",highlighted)
-    #cv.waitKey(1000)
     cv.imwrite("output/01_highlighted.jpg",highlighted)
     print(f"        Wrote highlighted image to output/01_highlighted.jpg")
     

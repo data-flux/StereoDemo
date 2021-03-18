@@ -47,7 +47,7 @@ def applyModel(ccoord,coeffs):
     r = np.matmul(model,coeffs)
     return r
 
-def ransacSinoidFit(ccoord,minDataPoints=50,iterations=10,inlierThreshold=.005,minInlierFraction=0.75,VERBOSE=False):
+def ransacSinoidFit(ccoord,minDataPoints=50,iterations=10,inlierThreshold=.005,minInlierFraction=0.90,VERBOSE=False):
     N = ccoord.shape[1]
     besterr = np.inf
     bestinliers = [0]
