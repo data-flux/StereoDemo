@@ -1,5 +1,7 @@
 These directories will contain output files after running the demo.
 
+.npy files can be opened with numpy.load(filename) in python.
+
 ## 00_reference.jpg
 
 The unchanged reference image.
@@ -20,5 +22,5 @@ where RGB are the color values of the reference image
 
 Pointcloud of the difference between the fit and the cylindrically transformed data.  
 Rows correspond to points, Columns correspond to:  
-[anomalyscore,phi*r0,Z,R,G,B]  
-where phi*r0 is the angle scaled with the average radius, to be in proportion with Z.
+[anomalyscore,phi\*r0,Z,R,G,B]  
+where phi\*r0 is the angle scaled with the average radius, to be in proportion with Z.
