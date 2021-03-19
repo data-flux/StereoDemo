@@ -2,6 +2,7 @@
 import numpy as np
 import cv2 as cv
 import random
+import os
 from funcy import lmap
 from code.StereoMatch import stereoMatch, calculatePointCloud, plotPointCloud
 from code.Filter import removeBackground, zBand, interactiveZBand
@@ -9,11 +10,23 @@ from code.Data import loadImageSet, listImageSets
 from code.Surface import cylindricalCoordinates, ransacSinoidFit, flattenSurface
 from code.Anomaly import highlightAnomalies
 
+try:
+    import pptk
+    INTERACTIVE = True
+except:
+    print("Could not import module pptk, running non-interactively!")
+    INTERACTIVE = False
+
 def demo(imset):
     print(f"[1/5] Image Acquisition")
     imageSet = loadImageSet(imset)
-    cv.imwrite("output/00_reference.jpg",imageSet[0])
-    print(f"        Wrote reference image to output/00_reference.jpg")
+
+    try:
+        os.mkdir(f"output/{imset}")
+    except FileExistsError:
+        pass
+    cv.imwrite(f"output/{imset}/00_reference.jpg",imageSet[0])
+    print(f"        Wrote reference image to output/{imset}/00_reference.jpg")
     
     print(f"[2/5] Semi-Global Stereo Matching")
     disparity = stereoMatch(imageSet)
@@ -27,9 +40,12 @@ def demo(imset):
     
     color = np.reshape(cv.cvtColor(imageSet[0],cv.COLOR_BGR2RGB),(1920*1200,3))[mask,:]/255.
     color8b = np.reshape(cv.cvtColor(imageSet[0],cv.COLOR_BGR2RGB),(1920*1200,3))[mask,:]
-    viewer0 = plotPointCloud(vertices[:,mask],color,[0.,0.,-2.])
-    zband = zBand(vertices,interactiveZBand(viewer0,vertices[:,mask]))
-    viewer0.close()
+    if INTERACTIVE:
+        viewer0 = plotPointCloud(vertices[:,mask],color,[0.,0.,-2.],theta=0)
+        zband = zBand(vertices,interactiveZBand(viewer0,vertices[:,mask]))
+        viewer0.close()
+    else:
+        zband = zBand(vertices,(-1.5,-2.0))
     fitmask = np.logical_and(mask,zband)
     
 
@@ -41,19 +57,20 @@ def demo(imset):
 
     print(f"[5/5] Anomaly Detection and Processing") 
     deviation = np.abs(flattened[2,mask].clip(-0.02,+0.02))
-    viewer1 = plotPointCloud(vertices[:,mask],(deviation,color),[0.,0.,-2.])
+    if INTERACTIVE:
+        viewer1 = plotPointCloud(vertices[:,mask],(deviation,color),[0.,0.,-2.])
     pc = np.hstack([vertices[:,mask].T,flattened[[[2]],mask].T,color8b])
-    np.save("output/02_pointcloud.npy",pc)
-    print(f"        Wrote pointcloud to output/02_pointcloud.npy")
-    viewer2 = plotPointCloud(flattened[:,mask],(deviation,color),[0.,1.5,0.])
+    np.save(f"output/{imset}/02_pointcloud.npy",pc)
+    print(f"        Wrote pointcloud to output/{imset}/02_pointcloud.npy")
+    if INTERACTIVE:
+        viewer2 = plotPointCloud(flattened[:,mask],(deviation,color),[0.,1.5,0.])
     pc2 = np.hstack([flattened[[[2]],mask].T,flattened[:2,mask].T,color8b])
-    np.save("output/03_fit.npy",pc2)
-    print(f"        Wrote fit pointcloud to output/03_fit.npy")
-
+    np.save(f"output/{imset}/03_fit.npy",pc2)
+    print(f"        Wrote fit pointcloud to output/{imset}/03_fit.npy")
 
     highlighted = highlightAnomalies(imageSet[0],flattened[2,:],mask)
-    cv.imwrite("output/01_highlighted.jpg",highlighted)
-    print(f"        Wrote highlighted image to output/01_highlighted.jpg")
+    cv.imwrite(f"output/{imset}/01_highlighted.jpg",highlighted)
+    print(f"        Wrote highlighted image to output/{imset}/01_highlighted.jpg")
     
     print(f"Done!")
 

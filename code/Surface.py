@@ -20,7 +20,7 @@ def cylindricalCoordinates(xyzcoord):
         ccoord[1,ccoord[1,:]<min_angle] += 2*np.pi
     return ccoord
 
-def sinoidModel(ccoord,components=6):
+def sinoidModel(ccoord,components=4):
     phi = ccoord[1,:]
     z = ccoord[2,:]
     model = np.array([  z*0+1,

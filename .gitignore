@@ -1,4 +1,6 @@
 # user defined
+output/*/*.npy
+output/*/*.jpg
 output/*.npy
 output/*.jpg
 

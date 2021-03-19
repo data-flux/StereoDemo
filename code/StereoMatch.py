@@ -5,8 +5,12 @@
 #
 import cv2
 import numpy as np
-import pptk
 import math
+try:
+    import pptk
+except:
+    pass
+
 
 
 def stereoMatch(img):
@@ -60,7 +64,7 @@ def calculatePointCloud(disparity):
     vertices[[1,2],:] = -vertices[[1,2],:] #flip on Z and Y axes for better viewing
     return vertices,mask
 
-def plotPointCloud(vertices,color=None,lookat=[0.,0.,0.]):
+def plotPointCloud(vertices,color=None,lookat=[0.,0.,0.],theta=math.pi/2):
     v = pptk.viewer(vertices.transpose())
     if color is not None:
         if type(color) is not tuple:
@@ -76,7 +80,7 @@ def plotPointCloud(vertices,color=None,lookat=[0.,0.,0.]):
         bg_color=[0.,0.,0.,.1],
         lookat=lookat,
         phi = -math.pi/2,
-        theta = math.pi/2,
+        theta = theta,
         selected = [],
     )
     return v

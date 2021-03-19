@@ -1,4 +1,4 @@
-This directory will contain some temporary files after running the demo.
+These directories will contain output files after running the demo.
 
 ## 00_reference.jpg
 
