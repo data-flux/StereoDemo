@@ -42,7 +42,12 @@ def demo(imset):
     color8b = np.reshape(cv.cvtColor(imageSet[0],cv.COLOR_BGR2RGB),(1920*1200,3))[mask,:]
     if INTERACTIVE:
         viewer0 = plotPointCloud(vertices[:,mask],color,[0.,0.,-2.],theta=0)
-        zband = zBand(vertices,interactiveZBand(viewer0,vertices[:,mask]))
+        while True:
+            try:
+                zband = zBand(vertices,interactiveZBand(viewer0,vertices[:,mask]))
+                break
+            except:
+                print("Invalid selection, please select at least two points for a valid Z-range")
         viewer0.close()
     else:
         zband = zBand(vertices,(-1.5,-2.0))

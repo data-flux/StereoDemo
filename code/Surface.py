@@ -4,6 +4,7 @@
 #   from Surface import cylindricalCoordinates, ransacSinoidFit, flattenSurface
 #
 import numpy as np
+from funcy import retry
 
 def cylindricalCoordinates(xyzcoord):
     import warnings
@@ -47,6 +48,7 @@ def applyModel(ccoord,coeffs):
     r = np.matmul(model,coeffs)
     return r
 
+@retry(3)
 def ransacSinoidFit(ccoord,minDataPoints=50,iterations=10,inlierThreshold=.005,minInlierFraction=0.90,VERBOSE=False):
     N = ccoord.shape[1]
     besterr = np.inf
@@ -77,6 +79,7 @@ def ransacSinoidFit(ccoord,minDataPoints=50,iterations=10,inlierThreshold=.005,m
             if VERBOSE:
                 print(f"        ({iter+1:2d}/{iterations:2d}) First step inliers: {100*sum(alsoinliers)/N:.1f}%, not enough!")
     if bestfit is None:
+        print("No appropriate model found!")
         raise Exception("RANSAC did not find an appropriate model!")
     inliers = np.zeros([N,],dtype=bool)
     inliers[bestinliers] = True
