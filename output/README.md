@@ -6,10 +6,10 @@ These directories will contain output files after running the demo.
 
 The unchanged reference image.
 
-## 01_highlighted.jpg
+## 01_disparity.jpg
 
-The reference image with detected anomalies highlighted.  
-Red pixels indicate anomalies, blue pixels indicate a failed stereomatch for that pixel or a point outside the valid Z-range.
+The disparity in grayscale ranging from minimum (20px) in black to maximum (220px) in white.  
+Magenta pixels indicate no match found for that pixel.
 
 ## 02_pointcloud.npy
 
@@ -24,3 +24,8 @@ Pointcloud of the difference between the fit and the cylindrically transformed d
 Rows correspond to points, Columns correspond to:  
 [anomalyscore,phi\*r0,Z,R,G,B]  
 where phi\*r0 is the angle scaled with the average radius, to be in proportion with Z.
+
+## 04_highlighted.jpg
+
+The reference image with detected anomalies highlighted.  
+Red pixels indicate anomalies, blue pixels indicate a failed stereomatch for that pixel or a point outside the valid Z-range.

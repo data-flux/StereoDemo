@@ -49,7 +49,7 @@ def interactiveZBand(viewer,vertices):
     viewer.wait()
     sel = viewer.get('selected')
     if len(sel)<2:
-        raise Exception("2 points need to be selected")
+        raise ValueError("2 points need to be selected")
     return (min(vertices[2,sel]),max(vertices[2,sel]))
 
 

@@ -30,6 +30,14 @@ def demo(imset):
     
     print(f"[2/5] Semi-Global Stereo Matching")
     disparity = stereoMatch(imageSet)
+    disparity_im = np.zeros([1200,1920,3],dtype=np.float32)
+    disparity_im[~np.isnan(disparity),0] = disparity[~np.isnan(disparity)]
+    disparity_im[~np.isnan(disparity),1] = disparity[~np.isnan(disparity)]
+    disparity_im[~np.isnan(disparity),2] = disparity[~np.isnan(disparity)]
+    disparity_im[np.isnan(disparity),:] = [220,0,220]
+    cv.imwrite(f"output/{imset}/01_disparity.jpg",disparity_im)
+    print(f"        Wrote disparity image to output/{imset}/01_disparity.jpg")
+
     print(f"[3/5] 3D Geometry Reconstruction")
     vertices,match = calculatePointCloud(disparity)
     
@@ -46,8 +54,10 @@ def demo(imset):
             try:
                 zband = zBand(vertices,interactiveZBand(viewer0,vertices[:,mask]))
                 break
-            except:
+            except ValueError:
                 print("Invalid selection, please select at least two points for a valid Z-range")
+            except KeyboardInterrupt:
+                raise KeyboardInterrupt
         viewer0.close()
     else:
         zband = zBand(vertices,(-1.5,-2.0))
@@ -74,8 +84,8 @@ def demo(imset):
     print(f"        Wrote fit pointcloud to output/{imset}/03_fit.npy")
 
     highlighted = highlightAnomalies(imageSet[0],flattened[2,:],mask)
-    cv.imwrite(f"output/{imset}/01_highlighted.jpg",highlighted)
-    print(f"        Wrote highlighted image to output/{imset}/01_highlighted.jpg")
+    cv.imwrite(f"output/{imset}/04_highlighted.jpg",highlighted)
+    print(f"        Wrote highlighted image to output/{imset}/04_highlighted.jpg")
     
     print(f"Done!")
 
