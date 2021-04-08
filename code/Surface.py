@@ -65,7 +65,8 @@ def ransacSinoidFit(ccoord,minDataPoints=50,iterations=10,inlierThreshold=.005,m
             bettermodel = fitModel(ccoord[:,alsoinliers])
             thiserr = np.mean(np.abs(applyModel(ccoord[:,alsoinliers], bettermodel)-ccoord[0,alsoinliers]))
             betterinliers = np.abs(applyModel(ccoord,bettermodel)-ccoord[0,:]) < inlierThreshold
-            if  thiserr < besterr:
+            #if  thiserr < besterr:
+            if  np.sum(betterinliers) > np.sum(bestinliers):
                 bestinliers = np.where(betterinliers)[0]
                 bestfit = bettermodel
                 bestinliers = betterinliers

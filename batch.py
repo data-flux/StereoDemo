@@ -3,7 +3,6 @@ import numpy as np
 import cv2 as cv
 import random
 import os
-from matplotlib import pyplot as pp
 from funcy import lmap
 from code.StereoMatch import stereoMatch, calculatePointCloud, plotPointCloud
 from code.Filter import removeBackground, zBand, interactiveZBand
@@ -11,13 +10,9 @@ from code.Data import loadImageSet, listImageSets
 from code.Surface import cylindricalCoordinates, ransacSinoidFit, flattenSurface
 from code.Anomaly import highlightAnomalies
 
+np.random.seed(0)
 
-try:
-    import pptk
-    INTERACTIVE = True
-except:
-    print("Could not import module pptk, running non-interactively!")
-    INTERACTIVE = False
+INTERACTIVE = False
 
 def demo(imset):
     print(f"[1/5] Image Acquisition")
@@ -89,31 +84,6 @@ def demo(imset):
     cv.imwrite(f"output/{imset}/04_highlighted.jpg",highlighted)
     print(f"        Wrote highlighted image to output/{imset}/04_highlighted.jpg")
     
-
-    fit = pc2
-    sel = np.logical_and(np.logical_and(1.00<fit[:,2],fit[:,2]<2.5),np.abs(fit[:,0])<0.05)
-    limits = [np.min(fit[sel,1]),
-              np.max(fit[sel,1]),
-              np.min(fit[sel,2]),
-              np.max(fit[sel,2])]
-    
-    pp.scatter(-fit[sel,1],fit[sel,2],s=1,c=fit[sel,3:6]/255.,marker='.')
-    pp.xlim(limits[0],limits[1])
-    pp.ylim(limits[2],limits[3])
-    pp.axis("off")
-    pp.tight_layout()
-    pp.savefig(f"output/{imset}/05_unfolded.png",dpi=300,pad_inches=0)
-    print(f"        Wrote unfolded image to output/{imset}/05_unfolded.png")
-    pp.scatter(-fit[sel,1],fit[sel,2],s=1,c=fit[sel,0],marker='.',cmap='seismic',vmin=-0.05,vmax=0.05)
-    pp.xlim(limits[0],limits[1])
-    pp.ylim(limits[2],limits[3])
-    pp.axis("off")
-    pp.tight_layout()
-    pp.savefig(f"output/{imset}/06_anomaly.png",dpi=300,pad_inches=0)
-    print(f"        Wrote anomaly image to output/{imset}/06_anomaly.png")
-
-
-
     print(f"Done!")
 
 
@@ -122,21 +92,9 @@ def demo(imset):
 if __name__=="__main__":
     imageSets = listImageSets()
     print(f"Found {len(imageSets)} image sets")
-    while True:
-        print(f"(L)ist, (R)andom, or enter a number 1-{len(imageSets)} to choose a set.")
-        inp = input()
-        if inp=="L" or inp=="l":
-            for i,im in enumerate(imageSets):
-                print(f"{i+1:2d}: {im}")
-            continue
-        elif inp=="R" or inp=='r':
-            imset = random.choice(imageSets)
-            break
+    for imset in imageSets:
+        print(f"Running pipeline on image set {imset}...")
         try:
-            choice = int(inp)
-            imset = imageSets[choice-1]
-            break
+            demo(imset)
         except:
             pass
-    print(f"Running pipeline on image set {imset}...")
-    demo(imset)
