@@ -104,7 +104,7 @@ def demo(imset):
     pp.tight_layout()
     pp.savefig(f"output/{imset}/05_unfolded.png",dpi=300,pad_inches=0)
     print(f"        Wrote unfolded image to output/{imset}/05_unfolded.png")
-    pp.scatter(-fit[sel,1],fit[sel,2],s=1,c=fit[sel,0],marker='.',cmap='seismic',vmin=-0.05,vmax=0.05)
+    pp.scatter(-fit[sel,1],fit[sel,2],s=1,c=fit[sel,0],marker='.',cmap='seismic',vmin=-0.025,vmax=0.025)
     pp.xlim(limits[0],limits[1])
     pp.ylim(limits[2],limits[3])
     pp.axis("off")

@@ -1,5 +1,5 @@
 # StereoDemo
-Demo accompanying the article
+Demo accompanying the article "RADIUS: Robust Anomaly Detection in Urban Drainage with Stereovision"
 
 Requires python3.6 or newer.
 
