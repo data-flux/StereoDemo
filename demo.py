@@ -4,7 +4,6 @@ import cv2 as cv
 import random
 import os
 from matplotlib import pyplot as pp
-from funcy import lmap
 from code.StereoMatch import stereoMatch, calculatePointCloud, plotPointCloud
 from code.Filter import removeBackground, zBand, interactiveZBand
 from code.Data import loadImageSet, listImageSets
@@ -84,6 +83,11 @@ def demo(imset):
     pc2 = np.hstack([flattened[[[2]],mask].T,flattened[:2,mask].T,color8b])
     np.save(f"output/{imset}/03_fit.npy",pc2)
     print(f"        Wrote fit pointcloud to output/{imset}/03_fit.npy")
+
+    valid = flattened[2,:] <= 0.01
+    valid = np.logical_and(valid,mask)
+    score = np.mean(np.abs(flattened[2,valid].clip(-1,0)))
+    print(f"  Global anomaly score: {1000*score:.3f}")
 
     highlighted = highlightAnomalies(imageSet[0],flattened[2,:],mask)
     cv.imwrite(f"output/{imset}/04_highlighted.jpg",highlighted)

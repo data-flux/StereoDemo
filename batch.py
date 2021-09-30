@@ -3,7 +3,6 @@ import numpy as np
 import cv2 as cv
 import random
 import os
-from funcy import lmap
 from code.StereoMatch import stereoMatch, calculatePointCloud, plotPointCloud
 from code.Filter import removeBackground, zBand, interactiveZBand
 from code.Data import loadImageSet, listImageSets

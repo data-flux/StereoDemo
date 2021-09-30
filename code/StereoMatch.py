@@ -41,7 +41,7 @@ def stereoMatch(img):
 def calculatePointCloud(disparity):
     dims = (1920,1200)
     scaling = 1000. #mm/m
-    focalmm =  26. #mm
+    focalmm =  16. #mm
     sensormm = 6.6 #mm
     baseline = 29. #mm
     focalpix = (focalmm / sensormm) * dims[0] #px

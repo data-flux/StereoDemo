@@ -7,7 +7,7 @@ from glob import glob
 import cv2 as cv
 import numpy as np
 from parse import parse
-from funcy import walk,lsplit,re_tester,rpartial
+from funcy import walk
 
 
 def loadImageSet(imageset,dir="./img/"):
